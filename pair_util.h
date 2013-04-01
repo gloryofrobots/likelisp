@@ -1,11 +1,11 @@
-#ifndef LIKELISP_UTIL_H
-#define LIKELISP_UTIL_H
-#include "cons.h"
+#ifndef LIKELISP_PAIR_UTIL_H
+#define LIKELISP_PAIR_UTIL_H
+#include "pair.h"
 namespace likelisp
 {
     /////////////////////////////////////////////////////////////////////////////
     template < typename T >
-    Cons<T> * map( Cons<T>* _pair, const boost::function<int (int)>& operation )
+    Pair<T> * map( Pair<T>* _pair, const boost::function<int (int)>& operation )
     {
         if( _pair == 0 )
         {
@@ -14,15 +14,15 @@ namespace likelisp
         
         int val = operation ( car(_pair) );
         
-        return make_cons<T>( val
-                        , [ _pair ,operation ] () -> Cons<T>*
+        return cons<T>( val
+                        , [ _pair ,operation ] () -> Pair<T>*
                         {
                             return map<T>( cdr( _pair ), operation );
                         });
     }
     /////////////////////////////////////////////////////////////////////////////
     template < typename T >
-    Cons<T> * filter( Cons<T>* _pair, const boost::function<bool (int)>& predicate )
+    Pair<T> * filter( Pair<T>* _pair, const boost::function<bool (int)>& predicate )
     {
         if( _pair == 0 )
         {
@@ -31,8 +31,8 @@ namespace likelisp
         
         if( predicate( car ( _pair ) ) == true )
         {
-            return make_cons<T>( car(_pair)
-                            , [ _pair ,predicate ] () -> Cons<T>* 
+            return cons<T>( car(_pair)
+                            , [ _pair ,predicate ] () -> Pair<T>* 
                             {
                                 return filter<T>( cdr( _pair ), predicate );
                             });
@@ -42,7 +42,7 @@ namespace likelisp
     }
     /////////////////////////////////////////////////////////////////////////////
     template < typename T >
-    void for_each( Cons<T> * _pair, const boost::function < void (int)>& operation, int _limit )
+    void for_each( Pair<T> * _pair, const boost::function < void (int)>& operation, int _limit )
     {
         if ( _pair == 0 )
         {
@@ -59,7 +59,7 @@ namespace likelisp
     }
     /////////////////////////////////////////////////////////////////////////////
     template < typename T >
-    void print_cons( Cons<T> * _pair, int _limit )
+    void print_pair( Pair<T> * _pair, int _limit )
     {
         
         for_each<T>( _pair
@@ -73,19 +73,19 @@ namespace likelisp
     }
     /////////////////////////////////////////////////////////////////////////////
     template < typename T >
-    Cons<T> * sieve(Cons<T> * _pair, const boost::function<bool (int,int)>& _predicate )
+    Pair<T> * sieve(Pair<T> * _pair, const boost::function<bool (int,int)>& _predicate )
     {
         if( _pair == 0 )
         {
             return 0;
         }
         
-        return make_cons<T>( car(_pair)
+        return cons<T>( car(_pair)
                         , [ _pair, _predicate ] ()
                         {                          
                             int val = car( _pair );
                             
-                            Cons<T> * filtered = filter<T>( cdr( _pair )
+                            Pair<T> * filtered = filter<T>( cdr( _pair )
                                                     , [ val, _predicate ] ( int x )
                                                     {
                                                         return _predicate( x, val );

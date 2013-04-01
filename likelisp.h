@@ -1,6 +1,6 @@
 #ifndef LIKELISP_H
 #define LIKELISP_H
 #include "interface.h"
-#include "cons.h"
-#include "util.h"
+#include "pair.h"
+#include "pair_util.h"
 #endif

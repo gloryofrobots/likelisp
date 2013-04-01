@@ -1,69 +1,67 @@
-#ifndef LIKELISP_CONS_H
-#define LIKELISP_CONS_H
-#include <boost/function.hpp>
+#ifndef LIKELISP_PAIR_H
+#define LIKELISP_PAIR_H
 #include "interface.h"
 namespace likelisp
 {
-   
     ////////////////////////////////////////////////////////////////////////////
     template< typename T >
-    class Cons
+    class Pair
     {
     private:
-        Cons( T _val, const boost::function< Cons<T>* (void)>& _generator )
+        Pair( T _val, const boost::function< Pair<T>* (void)>& _generator )
         : value( _val )
         , next( 0 )
         , generator( _generator )
         {
         }
         
-        Cons( T _val )
+        Pair( T _val )
         : next( 0 )
         , value( _val )
         {
         }
         
-        virtual ~Cons()
+        virtual ~Pair()
         {
          if( next != 0 ) delete next;
          //std::cout<< "~Cons" << car << std::endl;  
         }
         
         T value;
-        boost::function< Cons<T>* (void)> generator;
-        Cons* next;
+        boost::function< Pair<T>* (void)> generator;
+        Pair* next;
      
         
-    friend Cons<T>* make_cons<>( T val, const boost::function< Cons<T>* (void)>& op );
-    friend Cons<T>* make_cons<>( T val, Cons<T>* next );
-    friend T car<>( Cons<T>* _pair );
-    friend Cons<T>* cdr<>( Cons<T>* _pair );
-    friend bool has_next<>( Cons<T>* _pair );
-    friend void destroy_cons<>( Cons<T>* _pair );
+    friend Pair<T>* cons<>( T val, const boost::function< Pair<T>* (void)>& op );
+    friend Pair<T>* cons<>( T val, Pair<T>* next );
+    friend T car<>( Pair<T>* _pair );
+    friend Pair<T>* cdr<>( Pair<T>* _pair );
+    friend bool has_next<>( Pair<T>* _pair );
+    friend void destroy_pair<>( Pair<T>* _pair );
     };
     ////////////////////////////////////////////////////////////////////////////
     template < typename T >
-    bool has_next( Cons<T>* _pair )
+    bool has_next( Pair<T>* _pair )
     {
        return !( _pair->generator.empty() );
     }
     ////////////////////////////////////////////////////////////////////////////
     template < class T >
-    Cons<T>* make_cons( T val,const boost::function< Cons<T>* (void)>& op )
+    Pair<T>* cons( T val,const boost::function< Pair<T>* (void)>& op )
     {
-        return new Cons<T>(val, op);
+        return new Pair<T>(val, op);
     }
     ////////////////////////////////////////////////////////////////////////////
     template < typename T >
-    Cons<T>* make_cons( T val, Cons<T>* next )
+    Pair<T>* cons( T val, Pair<T>* next )
     {
         if ( next == 0 )
         {
-            return new Cons<T>(val);
+            return new Pair<T>(val);
         }
 
         
-        return new Cons<T>(val
+        return new Pair<T>(val
                         , [ next ] ()
                         {
                             return next;
@@ -71,19 +69,19 @@ namespace likelisp
     }
     ////////////////////////////////////////////////////////////////////////////
     template < typename T >
-    void destroy_cons( Cons<T> * _pair )
+    void destroy_pair( Pair<T> * _pair )
     {
         delete _pair;
     }
     ////////////////////////////////////////////////////////////////////////////
     template < typename T >
-    T car( Cons<T>* _pair )
+    T car( Pair<T>* _pair )
     {
         return _pair->value;
     }
     ////////////////////////////////////////////////////////////////////////////
     template < typename T >
-    Cons<T>* cdr( Cons<T>* _pair )
+    Pair<T>* cdr( Pair<T>* _pair )
     {
         if ( has_next<T>( _pair ) == false )
         {

@@ -1,4 +1,4 @@
-project(DelayedStream)
+project(likelisp_project)
 cmake_minimum_required(VERSION 2.8)
 
 SET(CMAKE_CXX_FLAGS "-std=c++0x")
@@ -6,11 +6,11 @@ SET(CMAKE_CXX_FLAGS "-std=c++0x")
 set(SRC_LIST 
     ${SRC_LIST}
     "likelisp.h"
-    "util.h"
-    "cons.h"
+    "pair.h"
+    "pair_util.h"
     "interface.h"
     "main.cpp"
     )
     
-add_executable(${PROJECT_NAME} ${SRC_LIST})
+add_executable(likelisp ${SRC_LIST})
 

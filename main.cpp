@@ -6,9 +6,9 @@
 using namespace likelisp;
 
 template < typename T >
-Cons<T>* integers_from( int n )
+Pair<T>* integers_from( int n )
 {
-    return make_cons<T>( n
+    return cons<T>( n
                     , [ n ] ()
                     {
                         return integers_from<T>( n + 1 );
@@ -16,37 +16,37 @@ Cons<T>* integers_from( int n )
 }
 
 template < typename T >
-Cons<T> * fibonacci_from( int a, int b )
+Pair<T> * fibonacci_from( int a, int b )
 {
-    return make_cons<T>( a
+    return cons<T>( a
                     , [ a ,b ] ()
-                      {
+                    {
                        return fibonacci_from<T>( b, a + b );
-                      } );  
+                    });  
 }
 
 int main()
 {
-    Cons<int> * integers = integers_from<int>(2);
-    print_cons( integers, 10 );
+    Pair<int> * integers = integers_from<int>(2);
+    print_pair( integers, 10 );
 
-    Cons<int> * evens = filter( integers, [] ( int _in ) { return ( ( _in % 2 ) == 0 ); } );
-    print_cons( evens, 10 );
+    Pair<int> * evens = filter( integers, [] ( int _in ) { return ( ( _in % 2 ) == 0 ); } );
+    print_pair( evens, 10 );
     
-    Cons<int> * squares = map( evens, [] ( int _in ) { return _in * _in; }  );
-    print_cons( squares, 10 );
+    Pair<int> * squares = map( evens, [] ( int _in ) { return _in * _in; }  );
+    print_pair( squares, 10 );
     
-    Cons<int> * primes = sieve( integers, [] ( int _first, int _second ) { return ( ( _first % _second ) != 0 ); } ); 
-    print_cons( primes, 10 );
+    Pair<int> * primes = sieve( integers, [] ( int _first, int _second ) { return ( ( _first % _second ) != 0 ); } ); 
+    print_pair( primes, 10 );
     
-    Cons<int> * fibonacci = fibonacci_from<int>( 21, 34 );
-    print_cons( fibonacci, 10 );
+    Pair<int> * fibonacci = fibonacci_from<int>( 21, 34 );
+    print_pair( fibonacci, 10 );
     
 
-    destroy_cons(integers);
-    destroy_cons(primes);
-    destroy_cons(squares);
-    destroy_cons(evens);
-    destroy_cons(fibonacci);
+    destroy_pair(integers);
+    destroy_pair(evens);
+    destroy_pair(squares);
+    destroy_pair(primes);
+    destroy_pair(fibonacci);
     return 0;
 }
