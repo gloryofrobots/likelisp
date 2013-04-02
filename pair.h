@@ -8,7 +8,7 @@ namespace likelisp
     class Pair
     {
     private:
-        Pair( T _val, const boost::function< Pair<T>* (void)>& _generator )
+        Pair( T _val, const std::function< Pair<T>* (void)>& _generator )
         : value( _val )
         , next( 0 )
         , generator( _generator )
@@ -28,11 +28,11 @@ namespace likelisp
         }
         
         T value;
-        boost::function< Pair<T>* (void)> generator;
+        std::function< Pair<T>* (void)> generator;
         Pair* next;
      
         
-    friend Pair<T>* cons<>( T val, const boost::function< Pair<T>* (void)>& op );
+    friend Pair<T>* cons<>( T val, const std::function< Pair<T>* (void)>& op );
     friend Pair<T>* cons<>( T val, Pair<T>* next );
     friend T car<>( Pair<T>* _pair );
     friend Pair<T>* cdr<>( Pair<T>* _pair );
@@ -43,11 +43,16 @@ namespace likelisp
     template < typename T >
     bool has_next( Pair<T>* _pair )
     {
-       return !( _pair->generator.empty() );
+       if ( !_pair->generator )
+       {
+            return false;
+       }
+       
+       return true;
     }
     ////////////////////////////////////////////////////////////////////////////
     template < class T >
-    Pair<T>* cons( T val,const boost::function< Pair<T>* (void)>& op )
+    Pair<T>* cons( T val,const std::function< Pair<T>* (void)>& op )
     {
         return new Pair<T>(val, op);
     }

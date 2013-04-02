@@ -5,7 +5,7 @@ namespace likelisp
 {
     /////////////////////////////////////////////////////////////////////////////
     template < typename T >
-    Pair<T> * map( Pair<T>* _pair, const boost::function<int (int)>& operation )
+    Pair<T> * map( Pair<T>* _pair, const std::function<int (int)>& operation )
     {
         if( _pair == 0 )
         {
@@ -22,7 +22,7 @@ namespace likelisp
     }
     /////////////////////////////////////////////////////////////////////////////
     template < typename T >
-    Pair<T> * filter( Pair<T>* _pair, const boost::function<bool (int)>& predicate )
+    Pair<T> * filter( Pair<T>* _pair, const std::function<bool (int)>& predicate )
     {
         if( _pair == 0 )
         {
@@ -42,7 +42,7 @@ namespace likelisp
     }
     /////////////////////////////////////////////////////////////////////////////
     template < typename T >
-    void for_each( Pair<T> * _pair, const boost::function < void (int)>& operation, int _limit )
+    void for_each( Pair<T> * _pair, const std::function < void (int)>& operation, int _limit )
     {
         if ( _pair == 0 )
         {
@@ -73,7 +73,7 @@ namespace likelisp
     }
     /////////////////////////////////////////////////////////////////////////////
     template < typename T >
-    Pair<T> * sieve(Pair<T> * _pair, const boost::function<bool (int,int)>& _predicate )
+    Pair<T> * sieve(Pair<T> * _pair, const std::function<bool (int,int)>& _predicate )
     {
         if( _pair == 0 )
         {
